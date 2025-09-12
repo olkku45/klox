@@ -1,3 +1,3 @@
-package com.craftinginterpreters.lox
+package klox.lox.src.main.kotlin
 
 data class Token(val type: TokenType, val lexeme: String, val literal: Any?, val line: Int)
