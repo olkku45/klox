@@ -1,4 +1,5 @@
 package klox.lox.src.main.kotlin
+
 abstract class AstPrinter : Expr.Visitor<String> {
     fun print(expr: Expr): String {
         return expr.accept(this)

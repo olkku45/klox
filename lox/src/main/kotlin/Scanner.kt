@@ -1,8 +1,7 @@
 package klox.lox.src.main.kotlin
 
-class Scanner(source: String) {
+class Scanner(val source: String) {
     private val tokens = mutableListOf<Token>()
-    private val source = ""
     private var start = 0
     private var current = 0
     private var line = 1
@@ -46,7 +45,6 @@ class Scanner(source: String) {
 
     fun scanToken() {
         var c = advance()
-        val Lox = Lox()
 
         when (c) {
             '(' -> addToken(TokenType.LEFT_PAREN)
@@ -88,7 +86,7 @@ class Scanner(source: String) {
             } else if (isAlpha(c)) {
                 identifier()
             } else {
-                Lox.error(line, "Unexpected character.")
+                error(line, "Unexpected character.")
             }
         }
     }
@@ -115,14 +113,13 @@ class Scanner(source: String) {
     }
 
     fun string() {
-        val Lox = Lox()
         while (peek() != '"' && !isAtEnd()) {
             if (peek() == '\n') line++
             advance()
         }
 
         if (isAtEnd()) {
-            Lox.error(line, "Unterminated string.")
+            error(line, "Unterminated string.")
             return
         }
 
