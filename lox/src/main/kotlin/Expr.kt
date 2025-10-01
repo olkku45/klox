@@ -2,10 +2,10 @@ package klox.lox.src.main.kotlin
 
 sealed class Expr {
     interface Visitor<R> {
-        fun visitBinaryExpr(expr: Binary): R
-        fun visitGroupingExpr(expr: Grouping): R
+        fun visitBinaryExpr(expr: Binary): R?
+        fun visitGroupingExpr(expr: Grouping): R?
         fun visitLiteralExpr(expr: Literal): R
-        fun visitUnaryExpr(expr: Unary): R
+        fun visitUnaryExpr(expr: Unary): R?
         fun visitVariableExpr(expr: Variable): R
         fun visitAssignExpr(expr: Assign): R
         fun visitLogicalExpr(expr: Logical): R
@@ -16,20 +16,20 @@ sealed class Expr {
         fun visitSuperExpr(expr: Super): R
     }
 
-    abstract fun <R> accept(visitor: Visitor<R>): R
+    abstract fun <R> accept(visitor: Visitor<R>): R?
 
     data class Binary(
         val left: Expr,
         val operator: Token,
         val right: Expr
     ) : Expr() {
-        override fun <R> accept(visitor: Visitor<R>): R = visitor.visitBinaryExpr(this)
+        override fun <R> accept(visitor: Visitor<R>): R? = visitor.visitBinaryExpr(this)
     }
 
     data class Grouping(
         val expression: Expr
     ) : Expr() {
-        override fun <R> accept(visitor: Visitor<R>): R = visitor.visitGroupingExpr(this)
+        override fun <R> accept(visitor: Visitor<R>): R? = visitor.visitGroupingExpr(this)
     }
 
     data class Literal(
@@ -42,7 +42,7 @@ sealed class Expr {
         val operator: Token,
         val right: Expr
     ) : Expr() {
-        override fun <R> accept(visitor: Visitor<R>): R = visitor.visitUnaryExpr(this)
+        override fun <R> accept(visitor: Visitor<R>): R? = visitor.visitUnaryExpr(this)
     }
 
     data class Variable(

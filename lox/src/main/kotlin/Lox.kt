@@ -6,7 +6,10 @@ import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Paths
 
+val interpreter: Interpreter = Interpreter()
+
 var hadError = false
+var hadRuntimeError = false
 
 fun main(args: Array<String>) {
     if (args.size > 1) {
@@ -23,6 +26,7 @@ fun runFile(filePath: String) {
     run(String(bytes, Charset.defaultCharset()))
 
     if (hadError) System.exit(65)
+    if (hadRuntimeError) System.exit(70)
 }
 
 fun runPrompt() {
@@ -48,11 +52,16 @@ fun run(source: String) {
 
     if (hadError) return
 
-    println(expression)
+    interpreter.interpret(expression)
 }
 
 fun error(line: Int, message: String) {
     report(line, "", message)
+}
+
+fun runtimeError(error: RuntimeError) {
+    System.err.println(error.message + "\n[line " + error.token.line + "]")
+    hadRuntimeError = true
 }
 
 fun report(line: Int, where: String, message: String) {
